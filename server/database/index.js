@@ -23,6 +23,7 @@ const pullAllUsers = () => {
 };
 
 const insereUser = (id, nome, senha) => {
+    
     let sql = `INSERT INTO users (id, nome, passwrod) VALUES (${id}, '${nome}', '${senha}')`;
     con.query(sql, (err) => {
         if (err) throw err;
@@ -51,24 +52,42 @@ const updateUser = (id, set, value) => {
     });
 }
 
-const dados = process.argv.slice();
-switch (dados[2]){
-    case 'mostrar':
-        pullAllUsers();
-        break;
-
-    case 'insere':
-        break;
-
-    case 'update':
-        break;
-
-    case 'delete':
-        break;
-    
-    default:
-        console.log("Valor definido para opereação inválido");
+const verifica = async (id) => {
+    let sql = `SELECT COUNT(id) AS iduser FROM users WHERE id=${id}`; 
+    var ix = 0;
+    con.query(sql, async (err, result) => {
+        if (err) throw (err);
+        return await result[0].iduser
+    });
 }
 
+const dados = process.argv.slice();
+
+async function trySwitch(dados) {
+    switch (dados[2]){
+        case 'mostrar':
+            pullAllUsers();
+            break;
+    
+        case 'insere':
+            insereUser(dados[3]);
+            break;
+    
+        case 'update':
+            break;
+    
+        case 'delete':
+            break;
+        
+        case 'verificaid':
+            verifica(2).then(a => console.log(a));
+            break;
+
+        default:
+            console.log("Valor definido para opereação inválido");
+    }
+}
+
+trySwitch(dados);
 
 con.end();
