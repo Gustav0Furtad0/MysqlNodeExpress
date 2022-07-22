@@ -37,7 +37,7 @@ const deleteUser = (id) => {
         if(err) throw err;
         console.log(`Usuário de id ${id} DELETADO com sucesso`)
     });
-}
+};
 
 const updateUser = (id, set, value) => {
     let sql;
@@ -50,7 +50,7 @@ const updateUser = (id, set, value) => {
         if(err) throw err;
         console.log(`Update de ${set} feito com sucesso em id=${id}`);
     });
-}
+};
 
 const verifica = async (id) => {
     let sql = `SELECT COUNT(id) AS iduser FROM users WHERE id=${id}`; 
@@ -59,7 +59,7 @@ const verifica = async (id) => {
         if (err) throw (err);
         return await result[0].iduser
     });
-}
+};
 
 const dados = process.argv.slice();
 
@@ -70,23 +70,21 @@ async function trySwitch(dados) {
             break;
     
         case 'insere':
-            insereUser(dados[3]);
+            insereUser(dados[3], dados[4], dados[5]);
             break;
     
         case 'update':
+            updateUser(dados[3], dados[4], dados[5]);
             break;
     
         case 'delete':
+            deleteUser(dados[3]);
             break;
         
-        case 'verificaid':
-            verifica(2).then(a => console.log(a));
-            break;
-
         default:
             console.log("Valor definido para opereação inválido");
-    }
-}
+    };
+};
 
 trySwitch(dados);
 
